@@ -1,0 +1,44 @@
+cube c; 
+logic g;
+int startTime = 0;
+void setup(){
+  size(500, 500);
+  background(255, 255, 255);
+  c = new cube();
+  g = new logic(c);
+  fill(0);
+  text(" ", 450, 490); 
+  
+}
+void draw(){
+  g.steps();
+  if(g.done){
+    g.lastStep();
+    background(255);
+    fill(0);
+    text((g.endTime-startTime)/1000.0, 450, 480); 
+    text(g.count, 450, 490); 
+  }
+  if((g.endTime-startTime)/1000.0 >= 10){
+    g.move = 10;
+    g.done = true;
+  }
+  if(g.move < 10 && g.disp){
+    background(255);
+    fill(0);
+    text((millis()-startTime)/1000.0, 450, 480); 
+    text(g.count, 450, 490); 
+  }
+  c.drawCube();
+}
+
+void mousePressed(){
+  g.done = false;
+  g.move = 1;
+  g.disp = true;
+  startTime = millis();
+}
+
+void keyReleased(){
+  g.shuffle(1000);
+}

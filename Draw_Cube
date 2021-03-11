@@ -1,0 +1,415 @@
+class cube{
+  ArrayList<String> turns = new ArrayList<String>(); 
+  int step = 1;
+  int[][] up = {{1,1,1}, {1,1,1}, {1,1,1}};
+  int[][] right = {{2,2,2},{2,2,2},{2,2,2}};
+  int[][] front = {{3,3,3},{3,3,3},{3,3,3}};
+  int[][] left = {{4,4,4},{4,4,4},{4,4,4}};
+  int[][] back = {{5,5,5},{5,5,5},{5,5,5}};
+  int[][] down = {{6,6,6},{6,6,6},{6,6,6}};
+  cube(){
+    drawCube();
+  }
+  void drawCube(){
+    drawSide(up, 200, 110);
+    drawSide(front, 200, 200);
+    drawSide(right, 290, 200);
+    drawSide(left, 110, 200);
+    drawSide(back, 20, 200);
+    drawSide(down, 200, 290);
+  }
+  
+  void turnCubeX(){
+    clockWise(up);
+    counterClockWise(down);
+    int[][] placeholder = front;
+    front = right;
+    right = back;
+    back = left;
+    left = placeholder;
+    print("TCX ");
+    turns.add("TCX");
+  }
+  void turnCubeXPrime(){
+    clockWise(down);
+    counterClockWise(up);
+    int[][] placeholder = front;
+    front = left;
+    left = back;
+    back = right;
+    right = placeholder;
+    print("TCX' ");
+    turns.add("TCX'");
+  }
+  void turnCubeY(){
+    clockWise(right);
+    counterClockWise(left);
+    int[][] placeholder = front;
+    front = down;
+    down = back;
+    back = up;
+    up = placeholder;
+    clockWise(back);
+    clockWise(back);
+    clockWise(down);
+    clockWise(down);
+    print("TCY ");
+    turns.add("TCY");
+  }
+  void turnCubeYPrime(){
+    clockWise(left);
+    counterClockWise(right);
+    int[][] placeholder = front;
+    front = up;
+    up = back;
+    back = down;
+    down = placeholder;
+    clockWise(back);
+    clockWise(back);
+    clockWise(up);
+    clockWise(up);
+    print("TCY' ");
+    turns.add("TCY'");
+  }
+
+  void drawSide(int[][] side, int startX, int startY){
+    int x = startX;
+    int y = startY;
+    for(int[] i : side){
+      for(int j : i){
+        if(j == 1){
+          fill(255, 255, 255);
+          rect(x, y, 30, 30);
+        } else if(j == 2){
+          fill(255, 150, 0);
+          rect(x, y, 30, 30);
+        }else if(j == 3){
+          fill(0, 0, 255);
+          rect(x, y, 30, 30);
+        }else if(j == 4){
+          fill(255, 0, 0);
+          rect(x, y, 30, 30);
+        }else if(j == 5){
+          fill(0, 255, 0);
+          rect(x, y, 30, 30);
+        } else if(j == 6){
+          fill(255, 255, 0);
+          rect(x, y, 30, 30);
+        }
+        x += 30;
+      }
+      y += 30;
+      x = startX;
+    }
+  }
+  
+  void clockWise(int[][] x){
+    int placeholder = x[0][0];
+    x[0][0] = x[2][0];
+    x[2][0] = x[2][2];
+    x[2][2] = x[0][2];
+    x[0][2] = placeholder;
+    
+    placeholder = x[0][1];
+    x[0][1] = x[1][0];
+    x[1][0] = x[2][1];
+    x[2][1] = x[1][2];
+    x[1][2] = placeholder;
+  }
+  
+  void counterClockWise(int[][] x){
+    int placeholder = x[0][0];
+    x[0][0] = x[0][2];
+    x[0][2] = x[2][2];
+    x[2][2] = x[2][0];
+    x[2][0] = placeholder;
+    
+    placeholder = x[0][1];
+    x[0][1] = x[1][2];
+    x[1][2] = x[2][1];
+    x[2][1] = x[1][0];
+    x[1][0] = placeholder;
+  }
+  void r(){
+    clockWise(right);
+    
+    for(int i = 0; i < 3; i++){
+      int placeholder = front[i][2];
+      front[i][2] = down[i][2];
+      down[i][2] = back[2-i][0];
+      back[2-i][0] = up[i][2];
+      up[i][2] = placeholder;
+    }
+    print("r ");
+    turns.add("r");
+  }
+  
+    void rPrime(){
+    counterClockWise(right);
+    
+    for(int i = 0; i < 3; i++){
+      int placeholder = front[i][2];
+      front[i][2] = up[i][2];
+      up[i][2] = back[2-i][0];
+      back[2-i][0] = down[i][2];
+      down[i][2] = placeholder;
+    }
+    print("r' ");
+    turns.add("r'");
+  }
+  
+  void u(){
+    clockWise(up);
+    
+    for(int i = 0; i < 3; i++){
+      int placeholder = front[0][i];
+      front[0][i] = right[0][i];
+      right[0][i] = back[0][i];
+      back[0][i] = left[0][i];
+      left[0][i] = placeholder;
+    }
+    print("u ");
+    turns.add("u");
+  }
+  
+  void uPrime(){
+    counterClockWise(up);
+    for(int i = 0; i < 3; i++){
+      int placeholder = front[0][i];
+      front[0][i] = left[0][i];
+      left[0][i] = back[0][i];
+      back[0][i] = right[0][i];
+      right[0][i] = placeholder;
+    }
+    print("u' ");
+    turns.add("u'");
+  }
+  
+  void l(){
+    clockWise(left);
+    
+    for(int i = 0; i < 3; i++){
+      int placeholder = front[i][0];
+      front[i][0] = up[i][0];
+      up[i][0] = back[2-i][2];
+      back[2-i][2] = down[i][0];
+      down[i][0] = placeholder;
+    }
+    print("l ");
+    turns.add("l");
+  }
+  void lPrime(){
+    counterClockWise(left);
+    
+    for(int i = 0; i < 3; i++){
+      int placeholder = front[i][0];
+      front[i][0] = down[i][0];
+      down[i][0] = back[2-i][2];
+      back[2-i][2] = up[i][0];
+      up[i][0] = placeholder;
+    }
+    print("l' ");
+    turns.add("l'");
+  }
+  
+  void f(){
+    clockWise(front);
+    
+    for(int i = 0; i < 3; i++){
+      int placeholder = down[0][i];
+      down[0][i] = right[2-i][0];
+      right[2-i][0] = up[2][2-i];
+      up[2][2-i] = left[i][2];
+      left[i][2] = placeholder;
+    }
+    print("f ");
+    turns.add("f");
+  }
+  
+  void fPrime(){
+    counterClockWise(front);
+    for(int i = 0; i < 3; i++){
+      int placeholder = down[0][i];
+      down[0][i] = left[i][2];
+      left[i][2] = up[2][2-i];
+      up[2][2-i] = right[2-i][0];
+      right[2-i][0] = placeholder;
+    }
+    print("f' ");
+    turns.add("f'");
+  }
+  void d(){
+    clockWise(down);
+    for(int i = 0; i < 3; i++){
+      int placeholder = front[2][i];
+      front[2][i] = left[2][i];
+      left[2][i] = back[2][i];
+      back[2][i] = right[2][i];
+      right[2][i] = placeholder;
+    }
+    print("d ");
+    turns.add("d");
+  }
+  void dPrime(){
+    counterClockWise(down);
+    for(int i = 0; i < 3; i++){
+      int placeholder = front[2][i];
+      front[2][i] = right[2][i];
+      right[2][i] = back[2][i];
+      back[2][i] = left[2][i];
+      left[2][i] = placeholder;
+    }
+    print("d' ");
+    turns.add("d'");
+  }
+  void b(){
+    clockWise(back);
+    
+    for(int i = 0; i < 3; i++){
+      int placeholder = down[2][i];
+      down[2][i] = left[i][0];
+      left[i][0] = up[0][2-i];
+      up[0][2-i] = right[2-i][2];
+      right[2-i][2] = placeholder;
+    }
+    print("b ");
+    turns.add("b");
+  }
+  void bPrime(){
+    counterClockWise(back);
+    
+    for(int i = 0; i < 3; i++){
+      int placeholder = down[2][i];
+      down[2][i] = right[2-i][2];
+      right[2-i][2] = up[0][2-i];
+      up[0][2-i] = left[i][0];
+      left[i][0] = placeholder;
+    }
+    print("b' ");
+    turns.add("b'");
+  }
+  
+  void movesList(ArrayList list){
+    String str = "";
+    for(int i = 0; i < list.size(); i++){
+      if(list.get(i) == "TCX"){
+        for(int j = i; j < list.size(); j++){
+          if(list.get(j) == "f"){
+            list.set(j, "r");
+          } else if(list.get(j) == "f'"){
+            list.set(j, "r'");
+          }else if(list.get(j) == "r"){
+            list.set(j, "b");
+          } else if(list.get(j) == "r'"){
+            list.set(j, "b'");
+          }else if(list.get(j) == "b"){
+            list.set(j, "l");
+          } else if(list.get(j) == "b'"){
+            list.set(j, "l'");
+          }else if(list.get(j) == "l"){
+            list.set(j, "f");
+          } else if(list.get(j) == "l'"){
+            list.set(j, "f'");
+          }
+        }
+        list.remove(i);
+        i--;
+      }else if(list.get(i) == "TCX'"){
+        for(int j = i; j < list.size(); j++){
+          if(list.get(j) == "f"){
+            list.set(j, "l");
+          } else if(list.get(j) == "f'"){
+            list.set(j, "l'");
+          }else if(list.get(j) == "l"){
+            list.set(j, "b");
+          } else if(list.get(j) == "l'"){
+            list.set(j, "b'");
+          }else if(list.get(j) == "b"){
+            list.set(j, "r");
+          } else if(list.get(j) == "b'"){
+            list.set(j, "r'");
+          }else if(list.get(j) == "r"){
+            list.set(j, "f");
+          } else if(list.get(j) == "r'"){
+            list.set(j, "f'");
+          }
+        }
+        list.remove(i);
+        i--;
+      }else if(list.get(i) == "TCY"){
+        for(int j = i; j < list.size(); j++){
+          if(list.get(j) == "f"){
+            list.set(j, "d");
+          } else if(list.get(j) == "f'"){
+            list.set(j, "d'");
+          }else if(list.get(j) == "d"){
+            list.set(j, "b");
+          } else if(list.get(j) == "d'"){
+            list.set(j, "b'");
+          }else if(list.get(j) == "b"){
+            list.set(j, "u");
+          } else if(list.get(j) == "b'"){
+            list.set(j, "u'");
+          }else if(list.get(j) == "u"){
+            list.set(j, "f");
+          } else if(list.get(j) == "u'"){
+            list.set(j, "f'");
+          }
+        }
+        list.remove(i);
+        i--;
+      }else if(list.get(i) == "TCY'"){
+        for(int j = i; j < list.size(); j++){
+          if(list.get(j) == "f"){
+            list.set(j, "u");
+          } else if(list.get(j) == "f'"){
+            list.set(j, "u'");
+          }else if(list.get(j) == "d"){
+            list.set(j, "f");
+          } else if(list.get(j) == "d'"){
+            list.set(j, "f'");
+          }else if(list.get(j) == "b"){
+            list.set(j, "d");
+          } else if(list.get(j) == "b'"){
+            list.set(j, "d'");
+          }else if(list.get(j) == "u"){
+            list.set(j, "b");
+          } else if(list.get(j) == "u'"){
+            list.set(j, "b'");
+          }
+        }
+        list.remove(i);
+        i--;
+      }
+      
+    }
+    for(int i = 0; i < list.size()-3; i++){
+      if(list.get(i) == list.get(i+1) && list.get(i) == list.get(i+2) && list.get(i) == list.get(i+3)){
+        list.remove(i);
+        list.remove(i);
+        list.remove(i);
+        list.remove(i);
+      }
+    }
+    for(int i = 0; i < list.size()-2; i++){
+      if(list.get(i) == list.get(i+1) && list.get(i) == list.get(i+2)){
+        list.set(i, list.get(i) + "'");
+        list.remove(i+1);
+        list.remove(i+1);
+      }
+    }
+    for(int i = 0; i < list.size()-1; i++){
+      if(list.get(i) == list.get(i+1)){
+        list.set(i, "2" + list.get(i));
+        list.remove(i+1);
+      }
+    }
+    for(int i = 0; i < list.size(); i++){
+      str += list.get(i) + " ";
+    }
+    println();
+    println();
+    println(str);
+  }
+  
+}

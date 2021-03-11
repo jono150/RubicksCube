@@ -1,0 +1,715 @@
+class logic{
+  cube c;
+    int[][] up;
+    int[][] right;
+    int[][] front;
+    int[][] left;
+    int[][] back;
+    int[][] down;
+    int move = 0;
+    int startTime = 0;
+    int endTime = 0;
+    int count = 0;
+    boolean disp = false;
+    boolean done = false;
+  logic(cube c){
+    this.c = c;
+    up = c.up;
+    right = c.right;
+    front = c.front;
+    left = c.left;
+    back = c.back;
+    down = c.down;
+  }
+  void whiteCrossFromFlower(){
+      // this block takes the cross from the yellow side and orients them correctly and moves them to the white side
+    for(int i = 0; i < 3; i++){
+      for(int j = 0; j < 3; j++){
+        if(c.down[i][j] == 1 && (i+j) % 2 == 1){
+          for(int k = 0; k < 4; k++){
+            if(c.down[0][1] == 1){
+              break;
+            } else{
+            c.d();
+          }
+          }
+          if(c.front[2][1] == 3){
+            c.f();
+            c.f();
+            } else if(c.front[2][1] == 2){
+              c.d();
+              c.r();
+              c.r();
+            } else if(c.front[2][1] == 4){
+              c.dPrime();
+              c.l();
+              c.l();
+            }else if(c.front[2][1] == 5){
+              c.d();
+              c.d();
+              c.b();
+              c.b();
+            }
+        }
+      }
+    }
+  }
+        
+    
+    void yellowFlower(){
+      for(int i = 0; i < 3; i++){
+          for(int j = 0; j < 3; j++){
+            if(c.up[i][j] == 1 && ((i+j) % 2 == 1)){
+              for(int k = 0; k < 4; k++){
+                if(c.up[2][1] != 1){
+                  while(c.down[0][1] == 1){
+                    c.d();
+                  }
+                  c.u();
+                } else {
+                 c.f();
+                 c.f();
+                  break;
+                }
+              }
+            break;
+              }
+            }
+          }
+      boolean doubleCheck;
+      // this block checks the front side for white edges and moves them down to the yellow side
+      do{
+        doubleCheck = false;
+        for(int i = 0; i < 3; i++){
+          for(int j = 0; j < 3; j++){
+            if(c.front[i][j] == 1 && ((i+j) % 2 == 1)){
+              for(int k = 0; k < 4; k++){
+                if(c.front[1][2] != 1){
+                  while(c.down[0][1] == 1){
+                    c.d();
+                  }
+                    c.f();
+                } else {
+                  while(c.down[1][2] == 1){
+                    c.d();
+                  }
+                  c.rPrime();
+                  doubleCheck = true;
+                  break;
+                }
+              }
+            break;
+            }
+          }
+        }
+      } while(doubleCheck);
+      
+      // this block checks the right side for white edges and moves them down to the yellow side
+     do{
+        doubleCheck = false;
+      for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+          if(c.right[i][j] == 1 && ((i+j) % 2 == 1)){
+            for(int k = 0; k < 4; k++){
+              if(c.right[1][2] != 1){
+                while(c.down[1][2] == 1){
+                  c.d();
+                }
+                  c.r();
+              } else {
+                while(c.down[2][1] == 1){
+                  c.d();
+                }
+                c.bPrime();
+                doubleCheck = true;
+                break;
+              }
+            }
+          break;
+          }
+        }
+      }
+      } while(doubleCheck);
+      
+      // this block checks the back side for white edges and moves them down to the yellow side
+      do{
+        doubleCheck = false;
+      for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+          if(c.back[i][j] == 1 && ((i+j) % 2 == 1)){
+            for(int k = 0; k < 4; k++){
+              if(c.back[1][2] != 1){
+                while(c.down[2][1] == 1){
+                  c.d();
+                }
+                  c.b();
+              } else {
+                while(c.down[1][0] == 1){
+                  c.d();
+                }
+                c.lPrime();
+                doubleCheck = true;
+                break;
+              }
+            }
+          break;
+          }
+        }
+      }
+      } while(doubleCheck);
+      
+      // this block checks the left side for white edges and moves them down to the yellow side
+      do{
+        doubleCheck = false;
+      for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+          if(c.left[i][j] == 1 && ((i+j) % 2 == 1)){
+            for(int k = 0; k < 4; k++){
+              if(c.left[1][2] != 1){
+                while(c.down[1][0] == 1){
+                  c.d();
+                }
+                  c.l();
+              } else {
+                while(c.down[0][1] == 1){
+                  c.d();
+                }
+                c.fPrime();
+                doubleCheck = true;
+                break;
+              }
+            }
+          break;
+          }
+        }
+      }
+      } while(doubleCheck);
+    }
+    
+    
+    void whiteCorner(){
+      
+      // this block checks the front bottom corners for white peices and places them in the right place
+      for(int i = 0; i < 4; i++){
+        if(c.front[2][0] == 1 || c.front[2][2] == 1){
+          break;
+        }
+        c.d();
+      }
+      
+      if(c.front[2][2] == 1){
+        while(c.down[0][2] != c.front[0][1]){
+          c.u();
+        }
+        c.dPrime();
+        c.rPrime();
+        c.d();
+        c.r();
+      }
+      
+    if(c.front[2][0] == 1){
+        while(c.down[0][0] != c.front[0][1]){
+          c.u();
+        }
+        c.d();
+        c.l();
+        c.dPrime();
+        c.lPrime();
+      }
+      
+      // this block checks the bottom layer for white corners and places them in the right place
+      for(int i = 0; i < 4; i++){
+        if(c.down[0][0] == 1 || c.down[0][2] == 1){
+          break;
+        }
+        c.d();
+      }
+      
+      if(c.down[0][2] == 1){
+        while(c.front[2][2] != c.right[0][1]){
+          c.u();
+        }
+        c.rPrime();
+        c.d();
+        c.d();
+        c.r();
+        c.d();
+        c.rPrime();
+        c.dPrime();
+        c.r();
+      }
+      
+      if(c.down[0][0] == 1){
+        while(c.front[2][0] != c.left[0][1]){
+          c.u();
+        }
+        c.l();
+        c.d();
+        c.d();
+        c.lPrime();
+        c.dPrime();
+        c.l();
+        c.d();
+        c.lPrime();
+      }
+      
+      // this block checks the front top corners for white peices and moves them to the bottom layer
+      for(int i = 0; i < 4; i++){
+        if(c.front[0][0] == 1 || c.front[0][2] == 1){
+          break;
+        }
+        c.u();
+      }
+      
+      if(c.front[0][2] == 1){
+        while(c.down[0][0] == 1 || c.front[2][0] == 1 || c.left[2][2] == 1){
+          c.d();
+        }
+        c.rPrime();
+        c.d();
+        c.r();
+      }
+      
+      if(c.front[0][0] == 1){
+        while(c.down[0][2] == 1 || c.front[2][2] == 1 || c.right[2][0] == 1){
+          c.d();
+        }
+        c.l();
+        c.dPrime();
+        c.lPrime();
+      }
+      
+      // this block checks for white corners which are properly oriented but in different places
+      for(int i = 0; i < 4; i++){
+        if(c.up[2][2] == 1 && c.front[0][2] != c.front[0][1]){
+          break;
+        }
+        c.u();
+      }
+      
+      if(c.up[2][2] == 1 && c.front[0][2] != c.front[0][1]){
+        while(c.down[0][0] == 1 || c.front[2][0] == 1 || c.left[2][2] == 1){
+          c.d();
+        }
+        c.rPrime();
+        c.d();
+        c.r();
+      }
+      
+      
+      while(c.front[0][1] != c.front[1][1]){
+        c.u();
+      }
+    }
+    
+    void middleLayer(){
+      //starting off with the front side
+      for(int i = 0; i < 4; i++){
+        if(c.front[2][1] == c.front[1][1] && c.down[0][1] != c.down[1][1]){
+          break;
+        }
+        c.d();
+      }
+      
+      if(c.down[0][1] == c.right[1][1]){
+        c.dPrime();
+        c.rPrime();
+        c.d();
+        c.r();
+        c.d();
+        c.f();
+        c.dPrime();
+        c.fPrime();
+      } else if(c.down[0][1] == c.left[1][1]) {
+        c.d();
+        c.l();
+        c.dPrime();
+        c.lPrime();
+        c.dPrime();
+        c.fPrime();
+        c.d();
+        c.f();
+      }
+      
+      //now the right side
+      for(int i = 0; i < 4; i++){
+        if(c.right[2][1] == c.right[1][1] && c.down[1][2] != c.down[1][1]){
+          break;
+        }
+        c.d();
+      }
+      
+      if(c.down[1][2] == c.back[1][1]){
+        c.dPrime();
+        c.bPrime();
+        c.d();
+        c.b();
+        c.d();
+        c.r();
+        c.dPrime();
+        c.rPrime();
+      } else if(c.down[1][2] == c.front[1][1]) {
+        c.d();
+        c.f();
+        c.dPrime();
+        c.fPrime();
+        c.dPrime();
+        c.rPrime();
+        c.d();
+        c.r();
+      }
+      
+      //now the back side
+      for(int i = 0; i < 4; i++){
+        if(c.back[2][1] == c.back[1][1] && c.down[2][1] != c.down[1][1]){
+          break;
+        }
+        c.d();
+      }
+      
+      if(c.down[2][1] == c.left[1][1]){
+        c.dPrime();
+        c.lPrime();
+        c.d();
+        c.l();
+        c.d();
+        c.b();
+        c.dPrime();
+        c.bPrime();
+      } else if(c.down[2][1] == c.right[1][1]) {
+        c.d();
+        c.r();
+        c.dPrime();
+        c.rPrime();
+        c.dPrime();
+        c.bPrime();
+        c.d();
+        c.b();
+      }
+      
+      //now the left side
+      for(int i = 0; i < 4; i++){
+        if(c.left[2][1] == c.left[1][1] && c.down[1][0] != c.down[1][1]){
+          break;
+        }
+        c.d();
+      }
+      
+      if(c.down[1][0] == c.front[1][1]){
+        c.dPrime();
+        c.fPrime();
+        c.d();
+        c.f();
+        c.d();
+        c.l();
+        c.dPrime();
+        c.lPrime();
+      } else if(c.down[1][0] == c.back[1][1]) {
+        c.d();
+        c.b();
+        c.dPrime();
+        c.bPrime();
+        c.dPrime();
+        c.lPrime();
+        c.d();
+        c.l();
+      }
+      
+      //this next block of code checks for backward middle edge peices
+      boolean potprob = false;
+        if(!(c.front[1][2] == c.front[1][1] && c.front[1][0] == c.front[1][1] && c.right[1][2] == c.right[1][1] && c.right[1][0] == c.right[1][1] && c.back[1][2] == c.back[1][1] && c.back[1][0] == c.back[1][1])) {
+          potprob = true;
+        }
+      
+      if(potprob){
+        if(c.front[1][2] != c.front[1][1]){
+          c.dPrime();
+          c.rPrime();
+          c.d();
+          c.r();
+          c.d();
+          c.f();
+          c.dPrime();
+          c.fPrime();
+        } else if(c.front[1][0] != c.front[1][1]){
+          c.d();
+          c.l();
+          c.dPrime();
+          c.lPrime();
+          c.dPrime();
+          c.fPrime();
+          c.d();
+          c.f();
+        } else if(c.right[1][2] != c.right[1][1]){
+          c.dPrime();
+          c.bPrime();
+          c.d();
+          c.b();
+          c.d();
+          c.r();
+          c.dPrime();
+          c.rPrime();
+        } else if(c.right[1][0] == c.right[1][1]) {
+          c.d();
+          c.f();
+          c.dPrime();
+          c.fPrime();
+          c.dPrime();
+          c.rPrime();
+          c.d();
+          c.r();
+        } else if(c.back[1][2] == c.back[1][1]){
+          c.dPrime();
+          c.lPrime();
+          c.d();
+          c.l();
+          c.d();
+          c.b();
+          c.dPrime();
+          c.bPrime();
+        } else if(c.down[1][0] == c.back[1][1]) {
+          c.d();
+          c.r();
+          c.dPrime();
+          c.rPrime();
+          c.dPrime();
+          c.bPrime();
+          c.d();
+          c.b();
+      }
+    }
+   }
+   
+   void yellowCross(){
+     for(int i = 0; i < 4; i++){
+       if(c.up[1][0] == 6){
+         break;
+       }
+       c.u();
+     }
+     
+     if(c.up[1][0] == 6){
+       if(c.up[0][1] == 6 && c.up[1][2] == 6){
+         
+       } else if(c.up[1][2] == 6){
+         c.f();
+         c.r();
+         c.u();
+         c.rPrime();
+         c.uPrime();
+         c.fPrime();
+       } else if(c.up[0][1] == 6){
+         c.f();
+         c.u();
+         c.r();
+         c.uPrime();
+         c.rPrime();
+         c.fPrime();
+       } else if(c.up[2][1] == 6){
+         c.u();
+         c.f();
+         c.u();
+         c.r();
+         c.uPrime();
+         c.rPrime();
+         c.fPrime();
+       }
+     } else{
+         c.f();
+         c.r();
+         c.u();
+         c.rPrime();
+         c.uPrime();
+         c.fPrime();
+     }
+   }
+   
+   void yellowEdge(){
+     for(int i = 0; i < 4; i++){
+       if(c.front[0][1] == c.front[1][1]){
+         break;
+       }
+       c.u();
+     }
+     
+     if(c.right[0][1] == c.right[1][1]){
+       c.turnCubeXPrime();
+     } else if(c.left[0][1] == c.left[1][1]){
+       c.turnCubeX();
+     } else{
+       c.r();
+       c.u();
+       c.rPrime();
+       c.u();
+       c.r();
+       c.u();
+       c.u();
+       c.rPrime();
+       
+     }
+   }
+   
+   void yellowCorner(){
+     for(int i = 0; i < 4; i++){
+       if((c.front[0][2] == c.front[1][1] || c.right[0][0] == c.front[1][1] || c.up[2][2] == c.front[1][1]) && (c.front[0][2] == c.right[1][1] || c.right[0][0] == c.right[1][1] || c.up[2][2] == c.right[1][1])){
+         break;
+       }
+       c.turnCubeX();
+     }
+     c.u();
+     c.r();
+     c.uPrime();
+     c.lPrime();
+     c.u();
+     c.rPrime();
+     c.uPrime();
+     c.l();
+   }
+   
+   void yellowCornerOrient(){
+     while(c.up[2][2] != 6){
+       c.rPrime();
+       c.dPrime();
+       c.r();
+       c.d();
+       c.rPrime();
+       c.dPrime();
+       c.r();
+       c.d();
+     }
+     c.u();
+   }
+   
+   void lastStep(){
+     while(c.front[0][1] != c.front[1][1]){
+       c.u();
+     }
+   }
+   
+   void steps(){
+     //delay(500);
+    switch(move){
+      case 1:
+        if(c.down[0][1] == 1 && c.down[1][0] == 1 && c.down[1][2] == 1 && c.down[2][1] == 1){
+          move = 2; 
+          c.turns.add("checkpoint 1 ");
+        }else {
+          yellowFlower();
+        }
+        break;
+      case 2:
+        if(c.up[0][1] == 1 && c.up[1][0] == 1 && c.up[1][2] == 1 && c.up[2][1] == 1){
+          move = 3; 
+          c.turns.add("checkpoint 2 ");
+        }else {
+          whiteCrossFromFlower();
+        }
+        break;
+      case 3:
+        if(c.up[0][0] == 1 && c.up[0][2] == 1 && c.up[2][2] == 1 && c.up[2][0] == 1 && c.front[0][0] == c.front[0][1] && c.front[0][2] == c.front[0][1] && c.left[0][2] == c.left[0][1]){
+          move = 4; 
+          c.turns.add("checkpoint 3 ");
+        }else {
+          whiteCorner();
+        }
+        break;
+      case 4:
+        middleLayer();
+        if(c.front[1][2] == c.front[1][1] && c.front[1][0] == c.front[1][1] && c.right[1][2] == c.right[1][1] && c.right[1][0] == c.right[1][1] && c.back[1][2] == c.back[1][1] && c.back[1][0] == c.back[1][1] && c.left[1][2] == c.left[1][1] && c.left[1][0] == c.left[1][1]) {
+            move = 5;
+           c.turnCubeY();
+           c.turnCubeY();
+           c.turnCubeX();
+           c.turnCubeX();
+           c.turns.add("checkpoint 4 ");
+        }
+        break;
+      case 5:
+        if(c.up[0][1] == 6 && c.up[1][0] == 6 && c.up[1][2] == 6 && c.up[2][1] == 6){
+          move = 6; 
+          c.turns.add("checkpoint 5 ");
+        }else{
+          yellowCross();
+        }
+        break;
+      case 6:
+        if(c.front[0][1] == c.front[1][1] && c.right[0][1] == c.right[1][1] && c.left[0][1] == c.left[1][1]){
+          move = 7;
+          c.turns.add("checkpoint 6 ");
+        } else{
+          yellowEdge();
+        }
+        break;
+      case 7:
+        boolean corn = true;
+        for(int i = 0; i < 4; i++){
+         if(!((c.front[0][2] == c.front[1][1] || c.right[0][0] == c.front[1][1] || c.up[2][2] == c.front[1][1]) && (c.front[0][2] == c.right[1][1] || c.right[0][0] == c.right[1][1] || c.up[2][2] == c.right[1][1]))){
+           corn = false;
+         }
+         c.turnCubeX();
+       }
+       if(corn){
+         move = 8;
+         c.turns.add("checkpoint 7 ");
+       } else{
+         yellowCorner();
+       }
+       break;
+      case 8:
+        if(c.up[0][0] == 6 && c.up[0][2] == 6 && c.up[2][2] == 6 && c.up[2][0] == 6){
+          move = 9; 
+          c.turns.add("checkpoint 8 ");
+        }else {
+          yellowCornerOrient();
+        }
+        break;
+      case 9:
+        lastStep();
+        c.turnCubeY();
+        c.turnCubeY();
+        c.movesList(c.turns);
+        move = 10;
+        //c = new cube();
+        //shuffle(1000);
+        count++;
+        done = true;
+        endTime = millis();
+        break;
+    }
+   }
+   
+   void shuffle(int n){
+     done = false;
+     int it;
+     for(int i = 0; i < n; i++){
+       it = int(random(12));
+       switch(it){
+         case 0:
+           c.f();
+         case 1:
+           c.fPrime();
+         case 2:
+           c.r();
+         case 3:
+           c.rPrime();
+         case 4:
+           c.b();
+         case 5:
+           c.bPrime();
+         case 6:
+           c.l();
+         case 7:
+           c.lPrime();
+         case 8:
+           c.u();
+         case 9:
+           c.uPrime();
+         case 10:
+           c.d();
+         case 11:
+           c.dPrime();
+       }
+       c.turns.clear();
+     }
+   }
+}
